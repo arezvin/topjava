@@ -33,6 +33,7 @@
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
+        <th colspan=2>Action</th>
     </tr>
     <c:forEach items="${meals}" var="meal">
         <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
@@ -40,8 +41,11 @@
             <td><javatime:format value="${meal.dateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
+            <td><a href="meals?action=edit&mealId=<c:out value="${meal.id}"/>">Update</a></td>
+            <td><a href="meals?action=delete&mealId=<c:out value="${meal.id}"/>">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
+<p><a href="meals?action=insert">Add Meal</a></p>
 </body>
 </html>
