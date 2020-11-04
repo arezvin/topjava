@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -71,6 +73,29 @@ public class MealServlet extends HttpServlet {
                         controller.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
+                break;
+            case "filter":
+                LocalDate startDate = request.getParameter("startDate").isEmpty() ? null :
+                        LocalDate.parse(request.getParameter("startDate"));
+                LocalDate endDate = request.getParameter("endDate").isEmpty() ? null :
+                        LocalDate.parse(request.getParameter("endDate"));
+                LocalTime startTime = request.getParameter("startTime").isEmpty() ? null :
+                        LocalTime.parse(request.getParameter("startTime"));
+                LocalTime endTime = request.getParameter("endTime").isEmpty() ? null :
+                        LocalTime.parse(request.getParameter("endTime"));
+
+                request.setAttribute("meals", controller.getFiltered(startDate, endDate, startTime, endTime));
+
+                if(startDate != null)
+                    request.setAttribute("startDate", startDate);
+                if(endDate != null)
+                    request.setAttribute("endDate", endDate);
+                if(startTime != null)
+                    request.setAttribute("startTime", startTime);
+                if(endTime != null)
+                    request.setAttribute("endTime", endTime);
+
+                request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":
             default:

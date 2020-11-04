@@ -8,6 +8,9 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
@@ -15,6 +18,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 import static ru.javawebinar.topjava.util.MealsUtil.getTos;
 import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
+import static ru.javawebinar.topjava.util.DateTimeUtil.isBetween;
 
 @Controller
 public class MealRestController {
@@ -48,6 +52,17 @@ public class MealRestController {
         Log.info("update {} with id={}", meal, id);
         assureIdConsistent(meal, id);
         service.update(meal);
+    }
+
+    public List<MealTo> getFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+        Log.info("getFiltered");
+        List<MealTo> filteredMeals = new ArrayList<>();
+        for(MealTo mealTo : getAll()) {
+            if(isBetween(mealTo.getDateTime().toLocalDate(), startDate, endDate)
+                && isBetween(mealTo.getDateTime().toLocalTime(), startTime, endTime))
+                filteredMeals.add(mealTo);
+        }
+        return filteredMeals;
     }
 
 }
