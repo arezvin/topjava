@@ -26,7 +26,9 @@ public class MealsUtil {
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100, authUserId()),
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000, authUserId()),
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500, authUserId()),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410, authUserId())
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410, authUserId()),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 29, 20, 0), "УжинАдмин", 400, 2),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 29, 12, 0), "ЛанчАдмин", 400, 2)
     );
 
     public static List<MealTo> getTos(Collection<Meal> meals, int caloriesPerDay) {

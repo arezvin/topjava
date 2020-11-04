@@ -25,7 +25,7 @@
     <h3><a href="index.html">Home</a></h3>
     <hr/>
     <h2>Meals</h2>
-    <form method="get">
+    <form method="get" action="meals">
         <input type="hidden" name="action" value="filter">
         FromDate: <input type="date" name="startDate" value="${startDate}"/>
         ToDate: <input type="date" name="endDate" value="${endDate}"/>
