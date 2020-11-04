@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
+import static ru.javawebinar.topjava.web.SecurityUtil.authUserCaloriesPerDay;
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 import static ru.javawebinar.topjava.util.MealsUtil.getTos;
-import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
 import static ru.javawebinar.topjava.util.DateTimeUtil.isBetween;
 
 @Controller
@@ -29,7 +29,7 @@ public class MealRestController {
 
     public List<MealTo> getAll() {
         Log.info("getAll");
-        return getTos(service.getAll(authUserId()), DEFAULT_CALORIES_PER_DAY);
+        return getTos(service.getAll(authUserId()), authUserCaloriesPerDay());
     }
 
     public Meal get(int id) {
