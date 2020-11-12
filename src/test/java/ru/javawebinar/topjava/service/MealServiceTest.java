@@ -1,6 +1,10 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.AfterClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Stopwatch;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -12,6 +16,9 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -28,6 +35,34 @@ public class MealServiceTest {
 
     @Autowired
     private MealService service;
+
+    private static List<String> testResults = new ArrayList<>();
+
+    @Rule
+    public Stopwatch stopwatch = new Stopwatch(){
+        @Override
+        protected void succeeded(long nanos, Description description) {
+            String result = String.format("Test %s %s, spent %d milliseconds",
+                    description.getMethodName(), "succeeded", TimeUnit.NANOSECONDS.toMillis(nanos));
+            System.out.println(result);
+            testResults.add(result);
+        }
+
+        @Override
+        protected void failed(long nanos, Throwable e, Description description) {
+            String result = String.format("Test %s %s, spent %d milliseconds",
+                    description.getMethodName(), "failed", TimeUnit.NANOSECONDS.toMillis(nanos));
+            System.out.println(result);
+            testResults.add(result);
+        }
+    };
+
+    @AfterClass
+    public static void afterClass() {
+        System.out.println();
+        testResults.forEach(System.out::println);
+        System.out.println();
+    }
 
     @Test
     public void delete() throws Exception {
