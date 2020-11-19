@@ -38,7 +38,7 @@ import static ru.javawebinar.topjava.UserTestData.*;
 public abstract class UserServiceTest {
     private static final Logger log = getLogger("result");
 
-    private static final StringBuilder results = new StringBuilder();
+    private static StringBuilder results = new StringBuilder();
 
     @Rule
     // http://stackoverflow.com/questions/14892125/what-is-the-best-practice-to-determine-the-execution-time-of-the-bussiness-relev
@@ -69,6 +69,7 @@ public abstract class UserServiceTest {
                 "\n---------------------------------" +
                 results +
                 "\n---------------------------------");
+        results = new StringBuilder();
     }
 
     @Test
