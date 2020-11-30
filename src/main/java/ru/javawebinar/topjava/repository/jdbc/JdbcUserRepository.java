@@ -73,7 +73,7 @@ public class JdbcUserRepository implements UserRepository {
         } else {
             jdbcTemplate.update("DELETE FROM user_roles WHERE user_id=?", user.getId());
         }
-        batchInsert(new ArrayList<>(user.getRoles()), user);
+        batchInsert(List.copyOf(user.getRoles()), user);
         return user;
     }
 
