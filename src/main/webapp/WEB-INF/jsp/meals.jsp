@@ -54,7 +54,7 @@
                 </thead>
                 <c:forEach items="${meals}" var="meal">
                     <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealTo"/>
-                    <tr data-mealExcess="${meal.excess}">
+                    <tr data-mealExcess="${meal.excess}" id="${meal.id}">
                         <td>
                                 <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
                                 <%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
@@ -66,7 +66,7 @@
                             <%--                        <td><a href="meals/update?id=${meal.id}"><spring:message code="common.update"/></a></td>--%>
                             <%--                        <td><a href="meals/delete?id=${meal.id}"><spring:message code="common.delete"/></a></td>--%>
                         <td><a><span class="fa fa-pencil"></span> </a></td>
-                        <td><a class="delete" id="${meal.id}"><span class="fa fa-remove"></span></a></td>
+                        <td><a class="delete"><span class="fa fa-remove"></span></a></td>
                     </tr>
                 </c:forEach>
             </table>
