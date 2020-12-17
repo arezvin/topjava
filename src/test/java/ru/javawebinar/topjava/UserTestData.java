@@ -10,12 +10,14 @@ import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 public class UserTestData {
     public static TestMatcher<User> USER_MATCHER = TestMatcher.usingFieldsWithIgnoringComparator(User.class, "registered","meals");
+    public static TestMatcher<User> USER_MATCHER_WITH_MEALS = TestMatcher.usingFieldsWithIgnoringComparator(User.class, "registered");
 
     public static final int NOT_FOUND = 10;
     public static final int USER_ID = START_SEQ;
     public static final int ADMIN_ID = START_SEQ + 1;
 
     public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", Role.USER);
+    public static final User USER_WITH_MEALS = new User(USER_ID, "User", "user@yandex.ru", "password", MealTestData.MEALS, Role.USER);
     public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", Role.ADMIN, Role.USER);
 
     public static User getNew() {

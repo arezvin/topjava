@@ -1,5 +1,8 @@
 package ru.javawebinar.topjava.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -23,6 +26,9 @@ import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
 })
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class User extends AbstractNamedEntity {
 
     public static final String DELETE = "User.delete";
@@ -87,6 +93,17 @@ public class User extends AbstractNamedEntity {
         setRoles(roles);
     }
 
+    public User(Integer id, String name, String email, String password, List<Meal> meals, Role role, Role... roles) {
+        super(id, name);
+        this.email = email;
+        this.password = password;
+        this.caloriesPerDay = DEFAULT_CALORIES_PER_DAY;
+        this.enabled = true;
+        this.registered = new Date();
+        this.meals = meals;
+        setRoles(EnumSet.of(role, roles));
+    }
+
     public String getEmail() {
         return email;
     }
@@ -148,6 +165,7 @@ public class User extends AbstractNamedEntity {
                 ", enabled=" + enabled +
                 ", roles=" + roles +
                 ", caloriesPerDay=" + caloriesPerDay +
+                ", meals=" + meals +
                 '}';
     }
 }
