@@ -33,3 +33,19 @@ $(function () {
         }
     );
 });
+
+function updateTableWithFilter() {
+    $.ajax({
+        type: "GET",
+        url: context.ajaxUrl + "filter",
+        data: $("#formFilter").serialize(),
+        success: function (data) {
+            context.datatableApi.clear().rows.add(data).draw();
+        }
+    });
+}
+
+function resetFilter() {
+    $("#formFilter").find(":input").val("");
+    updateTable();
+}
