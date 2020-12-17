@@ -40,3 +40,14 @@ $(function () {
         }
     );
 });
+
+function enable(cb, id) {
+    $.ajax({
+        type: "POST",
+        url: context.ajaxUrl + id,
+        data: {enabled: cb.checked}
+    }).done(function () {
+        updateTable();
+        successNoty("Changed");
+    });
+}

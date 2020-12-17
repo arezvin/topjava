@@ -25,4 +25,12 @@ class DataJpaUserServiceTest extends AbstractUserServiceTest {
         Assertions.assertThrows(NotFoundException.class,
                 () -> service.getWithMeals(1));
     }
+
+    @Test
+    void enable() throws Exception {
+        User disabled = service.get(USER_ID);
+        disabled.setEnabled(false);
+        service.enable(USER_ID, false);
+        USER_MATCHER.assertMatch(disabled, service.get(USER_ID));
+    }
 }

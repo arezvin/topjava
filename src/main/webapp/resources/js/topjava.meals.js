@@ -34,11 +34,13 @@ $(function () {
     );
 });
 
+var formFilter;
+
 function updateTableWithFilter() {
     $.ajax({
         type: "GET",
         url: context.ajaxUrl + "filter",
-        data: $("#formFilter").serialize(),
+        data: formFilter.serialize(),
         success: function (data) {
             context.datatableApi.clear().rows.add(data).draw();
         }
@@ -46,6 +48,6 @@ function updateTableWithFilter() {
 }
 
 function resetFilter() {
-    $("#formFilter").find(":input").val("");
+    formFilter.find(":input").val("");
     updateTable();
 }

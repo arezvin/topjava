@@ -3,6 +3,7 @@ var context, form;
 function makeEditable(ctx) {
     context = ctx;
     form = $('#detailsForm');
+    formFilter = $("#formFilter");
     $(".delete").click(function () {
         if (confirm('Are you sure?')) {
             deleteRow($(this).closest("tr").attr("id"));
