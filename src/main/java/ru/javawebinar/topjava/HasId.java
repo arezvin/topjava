@@ -8,7 +8,7 @@ public interface HasId {
     void setId(Integer id);
 
     default boolean isNew() {
-        return getId() == null;
+        return getId() == null || getId() == 0;
     }
 
     // doesn't work for hibernate lazy proxy
