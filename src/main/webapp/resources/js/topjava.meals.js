@@ -13,6 +13,16 @@ function clearFilter() {
     $.get("profile/meals/", updateTableByData);
 }
 
+$.datetimepicker.setLocale('ru');
+jQuery('#startDate,#endDate').datetimepicker({
+    timepicker: false,
+    format:'Y-m-d'
+});
+jQuery('#startTime,#endTime').datetimepicker({
+    datepicker: false,
+    format:'H:i'
+});
+
 $(function () {
     makeEditable({
         ajaxUrl: mealAjaxUrl,
