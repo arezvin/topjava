@@ -22,6 +22,9 @@ jQuery('#startTime,#endTime').datetimepicker({
     datepicker: false,
     format:'H:i'
 });
+jQuery('#dateTime').datetimepicker({
+    format:'Y-m-d H:i'
+});
 
 $(function () {
     makeEditable({
@@ -38,7 +41,7 @@ $(function () {
                     "data": "dateTime",
                     "render": function (data, type, row) {
                         if(type === "display") {
-                            return data.replace('T', ' ');
+                            return data.replace('T', ' ').substring(0, 16);
                         }
                         return data;
                     }
