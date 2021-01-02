@@ -7,6 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,16 +43,16 @@ public class ExceptionInfoHandler {
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
-    @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
+    @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class, ValidationException.class, MethodArgumentNotValidException.class})
     public ErrorInfo illegalRequestDataError(HttpServletRequest req, Exception e) {
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
     }
 
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler(ValidationException.class)
-    public ErrorInfo validation(HttpServletRequest req, Exception e) {
-        return logAndGetErrorInfo(req, e, true, VALIDATION_ERROR);
-    }
+//    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+//    @ExceptionHandler({ValidationException.class, MethodArgumentNotValidException.class})
+//    public ErrorInfo validation(HttpServletRequest req, Exception e) {
+//        return logAndGetErrorInfo(req, e, true, VALIDATION_ERROR);
+//    }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
@@ -66,6 +67,9 @@ public class ExceptionInfoHandler {
             log.error(errorType + " at request " + req.getRequestURL(), rootCause);
         } else {
             log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
+        }
+        if (e instanceof MethodArgumentNotValidException) {
+            return new ErrorInfo(req.getRequestURL(), errorType, ValidationUtil.getErrors(((MethodArgumentNotValidException) e).getBindingResult()));
         }
         return new ErrorInfo(req.getRequestURL(), errorType, rootCause.toString());
     }
