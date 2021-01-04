@@ -15,6 +15,7 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.to.UserTo;
 import ru.javawebinar.topjava.util.UserUtil;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.List;
 
@@ -96,5 +97,23 @@ public class UserService implements UserDetailsService {
 
     public User getWithMeals(int id) {
         return checkNotFoundWithId(repository.getWithMeals(id), id);
+    }
+
+    public boolean checkDuplicatingEmail(User user) {
+        try {
+            User userFromDb = getByEmail(user.getEmail());
+            return user.isNew() || !user.getId().equals(userFromDb.getId());
+        } catch (NotFoundException e) {
+            return false;
+        }
+    }
+
+    public boolean checkDuplicatingEmail(UserTo user) {
+        try {
+            User userFromDb = getByEmail(user.getEmail());
+            return user.isNew() || !user.getId().equals(userFromDb.getId());
+        } catch (NotFoundException e) {
+            return false;
+        }
     }
 }

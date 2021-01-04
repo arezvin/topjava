@@ -71,4 +71,8 @@ public abstract class AbstractUserController {
         log.info("getWithMeals {}", id);
         return service.getWithMeals(id);
     }
+
+    public boolean checkDuplicatingEmail(User user) {
+        return service.checkDuplicatingEmail(user);
+    }
 }

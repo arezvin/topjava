@@ -48,12 +48,6 @@ public class ExceptionInfoHandler {
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
     }
 
-//    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-//    @ExceptionHandler({ValidationException.class, MethodArgumentNotValidException.class})
-//    public ErrorInfo validation(HttpServletRequest req, Exception e) {
-//        return logAndGetErrorInfo(req, e, true, VALIDATION_ERROR);
-//    }
-
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ErrorInfo handleError(HttpServletRequest req, Exception e) {
@@ -70,6 +64,9 @@ public class ExceptionInfoHandler {
         }
         if (e instanceof MethodArgumentNotValidException) {
             return new ErrorInfo(req.getRequestURL(), errorType, ValidationUtil.getErrors(((MethodArgumentNotValidException) e).getBindingResult()));
+        }
+        if (e instanceof DataIntegrityViolationException) {
+            return new ErrorInfo(req.getRequestURL(), errorType, "User with this email already exists");
         }
         return new ErrorInfo(req.getRequestURL(), errorType, rootCause.toString());
     }
