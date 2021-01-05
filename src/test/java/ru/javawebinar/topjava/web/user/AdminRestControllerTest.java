@@ -168,4 +168,26 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
+
+    @Test
+    void duplicateMailCreate() throws Exception {
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(UserTestData.jsonWithPassword(new User(null, "UserOne", "admin@gmail.com", "newPass",  2000, Role.USER), "newPass"))
+                .with(userHttpBasic(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    void duplicateMailUpdate() throws Exception {
+        User updated = getUpdated();
+        updated.setEmail("admin@gmail.com");
+        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(UserTestData.jsonWithPassword(updated, "password"))
+                .with(userHttpBasic(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isConflict());
+    }
 }

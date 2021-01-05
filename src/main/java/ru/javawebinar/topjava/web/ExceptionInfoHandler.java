@@ -66,7 +66,12 @@ public class ExceptionInfoHandler {
             return new ErrorInfo(req.getRequestURL(), errorType, ValidationUtil.getErrors(((MethodArgumentNotValidException) e).getBindingResult()));
         }
         if (e instanceof DataIntegrityViolationException) {
-            return new ErrorInfo(req.getRequestURL(), errorType, "User with this email already exists");
+            if (rootCause.toString().contains("meals_unique_user_datetime_idx")) {
+                return new ErrorInfo(req.getRequestURL(), errorType, "You already have meal with this date/time");
+            }
+            else {
+                return new ErrorInfo(req.getRequestURL(), errorType, "User with this email already exists");
+            }
         }
         return new ErrorInfo(req.getRequestURL(), errorType, rootCause.toString());
     }

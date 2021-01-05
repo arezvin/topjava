@@ -3,11 +3,13 @@ package ru.javawebinar.topjava.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 
 import static java.time.LocalDateTime.of;
@@ -100,5 +102,18 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
         validateRootCause(() -> service.create(new Meal(null, null, "Description", 300), USER_ID), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 9), USER_ID), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 5001), USER_ID), ConstraintViolationException.class);
+    }
+
+    @Test
+    void duplicateDateTimeCreate() throws Exception {
+        assertThrows(DataIntegrityViolationException.class, () ->
+                service.create(new Meal(null, LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Еда", 1000), USER_ID));
+    }
+
+    @Test
+    void duplicateDateTimeUpdate() throws Exception {
+        Meal updated = getUpdated();
+        updated.setDateTime(MEAL2.getDateTime());
+        assertThrows(DataIntegrityViolationException.class, () -> service.update(updated, USER_ID));
     }
 }
