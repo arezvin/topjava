@@ -5,7 +5,8 @@
 
 <nav class="navbar navbar-dark bg-dark py-0">
     <div class="container">
-        <a href="meals" class="navbar-brand"><img src="resources/images/icon-meal.png"> <spring:message code="app.title"/></a>
+        <a href="meals" class="navbar-brand"><img src="resources/images/icon-meal.png"> <spring:message
+                code="app.title"/></a>
         <sec:authorize access="isAuthenticated()">
             <form:form class="form-inline my-2" action="logout" method="post">
                 <sec:authorize access="hasRole('ADMIN')">
@@ -25,6 +26,20 @@
                     <span class="fa fa-sign-in"></span>
                 </button>
             </form:form>
+        </sec:authorize>
+        <sec:authorize access="permitAll()">
+            <div class="dropdown">
+                <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: darkgray">
+                        ${pageContext.response.locale}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item"
+                       href="http://localhost:8080${requestScope['javax.servlet.forward.request_uri']}?lang=en">English</a>
+                    <a class="dropdown-item"
+                       href="http://localhost:8080${requestScope['javax.servlet.forward.request_uri']}?lang=ru">Русский</a>
+                </div>
+            </div>
         </sec:authorize>
     </div>
 </nav>
